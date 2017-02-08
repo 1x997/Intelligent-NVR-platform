@@ -1,0 +1,13 @@
+<?xml version="1.0"?> 
+<data> 
+  <module name="hat_etc"> 
+ 	 <caffe_root>../caffemodule</caffe_root>
+	 <labelmap_file>../caffemodule/hatmodule/labelmap_hat.prototxt</labelmap_file>
+     <model_def>../caffemodule/hatmodule/deploy.prototxt</model_def>
+     <model_weights>../caffemodule/hatmodule/VGG_hat_SSD_500x500_iter_80000.caffemodel</model_weights>
+     <client_file>/etc/fdfs/client.conf</client_file>
+     <method>manAndHat</method>
+     <image_resize>500</image_resize>
+     <num>2</num> 
+  </module>
+</data> 
