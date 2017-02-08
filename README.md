@@ -1,25 +1,16 @@
 #Intelligent-NVR-platform
- this project contain 3 parts <br />
-    1:)camera side: use c++ to invoke camera SDK <br />
-    2:)caffe side:use python to invoke caffe module,and do some business <br />
-    3:)web side:use java ,j2ee to get results from caffe side,to exhibit <br />
-   
- It's complex,We are  familiar with java&python, but Hikvision Camera  only has c++  SDK, so  we need to use c++ to invoke it's original service.  <br />
- We use rabbitMQ as the RPC server to connect  each layers;use FastDfs+nginx as image server;use Caffe's SSD branch as object detection module <br />
- 
-#Installation
+ This project consists of 3 parts <br />
+    * data input layer: use C++ to invoke camera SDK <br />
+    * Caffe layer:use Python to invoke caffe module,and do some business <br />
+    * Web layer:use Java&J2EE to get results from caffe layer,to exhibit <br />
 
-tools:<br />
-    1.rabbitMQ <http://www.rabbitmq.com/><br />
-    2.FastDfs + nginx <https://sourceforge.net/projects/fastdfs/><br />
-    3.caffe SSD branch <http://caffe.berkeleyvision.org/><br />
-    4.python2.7,java7,tomcat8<br />
-    
-    
- 
+   I use Hikvision Camera's SDK to invoke its original service as data input layer;use rabbitMQ as the RPC server to connect each layer;use FastDfs+nginx as image server;use Caffe's SSD branch as object detection model <br />
+   You can email yeliangm@126.com if you have any questions about this site.
+
+#External Components
 
 
-
-
-    
-    
+    * [rabbitMQ](http://www.rabbitmq.com/): Robust messaging for applications,it also can be  used as a RPC server to connect each layer. <br />
+    * [FastDfs](https://sourceforge.net/projects/fastdfs/)[Nginx](http://nginx.org/):FastDFS is a distributed file system, its HTTP service is relatively simple, you can use nginx and its [plugin](https://sourceforge.net/projects/fastdfs/files/FastDFS%20Nginx%20Module%20Source%20Code/) to replace.<br />
+    * caffe SSD branch <http://caffe.berkeleyvision.org/>:Caffe is a deep learning framework,we use it to train object detection model.<br />
+    * python2.7,java7,tomcat8:we use Python to invoke caffe, use java components to create websites <br />
