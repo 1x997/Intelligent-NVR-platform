@@ -1,0 +1,7 @@
+/target/
+/.settings/
+/.externalToolBuilders/
+/src/main/java/test/
+vms.log*
+.classpath
+.project

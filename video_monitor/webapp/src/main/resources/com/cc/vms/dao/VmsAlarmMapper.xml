@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cc.vms.dao.VmsAlarmMapper" >
+  <resultMap id="BaseResultMap" type="com.cc.vms.model.VmsAlarm" >
+    <id column="alarm_id" property="alarmId" jdbcType="INTEGER" />
+    <result column="station_id" property="stationId" jdbcType="INTEGER" />
+    <result column="camera_id" property="cameraId" jdbcType="INTEGER" />
+    <result column="check_type" property="checkType" jdbcType="VARCHAR" />
+    <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    alarm_id, station_id, camera_id, check_type, begin_time, end_time
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from vms_alarm
+    where alarm_id = #{alarmId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByCondition" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from vms_alarm
+    <where>
+        <if test="condition.stationId != null">
+            and station_id = #{condition.stationId}
+        </if>
+        <if test="condition.cameraId != null">
+            and camera_id = #{condition.cameraId}
+        </if>
+        <if test="condition.checkType != null and condition.checkType != ''">
+            and check_type = #{condition.checkType}
+        </if>
+        <if test="condition.beginTime != null">
+        <![CDATA[
+        	and end_time >= #{condition.beginTime}
+        ]]>
+        </if>
+        <if test="condition.endTime != null">
+        <![CDATA[
+            and begin_time <= #{condition.endTime}
+        ]]>
+        </if>
+        
+        <if test="condition.nowTime != null">
+        <![CDATA[
+            and #{condition.nowTime} <= begin_time + '3 min'
+        ]]>
+        </if>
+    </where>
+    order by alarm_id desc
+    limit #{rows} offset #{offset}
+  </select>
+  
+  <select id="countByCondition" resultType="java.lang.Integer" >
+    select count(*)
+    from vms_alarm
+    <where>
+        <if test="condition.stationId != null">
+            and station_id = #{condition.stationId}
+        </if>
+        <if test="condition.cameraId != null">
+            and camera_id = #{condition.cameraId}
+        </if>
+        <if test="condition.checkType != null and condition.checkType != ''">
+            and check_type = #{condition.checkType}
+        </if>
+        <if test="condition.beginTime != null">
+        <![CDATA[
+        	and end_time >= #{condition.beginTime}
+        ]]>
+        </if>
+        <if test="condition.endTime != null">
+        <![CDATA[
+            and begin_time <= #{condition.endTime}
+        ]]>
+        </if>
+    </where>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from vms_alarm
+    where alarm_id = #{alarmId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertSelective" parameterType="com.cc.vms.model.VmsAlarm" useGeneratedKeys="true" keyProperty="alarmId" >
+    insert into vms_alarm
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="stationId != null" >
+        station_id,
+      </if>
+      <if test="cameraId != null" >
+        camera_id,
+      </if>
+      <if test="checkType != null" >
+        check_type,
+      </if>
+      <if test="beginTime != null" >
+        begin_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="stationId != null" >
+        #{stationId,jdbcType=INTEGER},
+      </if>
+      <if test="cameraId != null" >
+        #{cameraId,jdbcType=INTEGER},
+      </if>
+      <if test="checkType != null" >
+        #{checkType,jdbcType=VARCHAR},
+      </if>
+      <if test="beginTime != null" >
+        #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.cc.vms.model.VmsAlarm" >
+    update vms_alarm
+    <set >
+      <if test="stationId != null" >
+        station_id = #{stationId,jdbcType=INTEGER},
+      </if>
+      <if test="cameraId != null" >
+        camera_id = #{cameraId,jdbcType=INTEGER},
+      </if>
+      <if test="checkType != null" >
+        check_type = #{checkType,jdbcType=VARCHAR},
+      </if>
+      <if test="beginTime != null" >
+        begin_time = #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where alarm_id = #{alarmId,jdbcType=INTEGER}
+  </update>
+
+</mapper>

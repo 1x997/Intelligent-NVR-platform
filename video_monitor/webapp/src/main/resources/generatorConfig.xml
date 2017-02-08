@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<!-- 这里jar包要用绝对路径，相对路径还不知道怎么设 -->
+    <classPathEntry location="c:\Users\d\.m2\repository\postgresql\postgresql\9.1-901.jdbc4\postgresql-9.1-901.jdbc4.jar" />
+    <context id="context1" targetRuntime="MyBatis3" defaultModelType="flat">
+    	<commentGenerator>
+    		<!-- 不要注释 -->
+		    <property name="suppressAllComments" value="true" />
+		</commentGenerator>
+		
+        <jdbcConnection driverClass="org.postgresql.Driver"
+            connectionURL="jdbc:postgresql://172.19.162.126:5432/vms"
+            userId="postgres" password="123456" />
+            
+        <javaModelGenerator targetPackage="com.cc.vms.model"
+            targetProject=".\src\main\java" />
+            
+        <sqlMapGenerator targetPackage="com.cc.vms.dao"
+            targetProject=".\src\main\resources" />
+            
+        <javaClientGenerator targetPackage="com.cc.vms.dao"
+            targetProject=".\src\main\java" type="XMLMAPPER" />
+            
+        <table tableName="vms_alarm" domainObjectName="VmsAlarm" 
+		        enableCountByExample="false" 
+				enableUpdateByExample="false" 
+				enableDeleteByExample="false" 
+				enableSelectByExample="false" 
+				selectByExampleQueryId="false"
+        />
+        
+        <table tableName="vms_alarm_image" domainObjectName="VmsAlarmImage" 
+		        enableCountByExample="false" 
+				enableUpdateByExample="false" 
+				enableDeleteByExample="false" 
+				enableSelectByExample="false" 
+				selectByExampleQueryId="false"
+        />
+        
+    </context>
+</generatorConfiguration>

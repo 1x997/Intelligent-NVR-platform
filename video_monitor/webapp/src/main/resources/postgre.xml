@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<bean id="abstractDataSource" class="com.jolbox.bonecp.BoneCPDataSource" abstract="true" destroy-method="close">
+		<property name="driverClass" value="${postgre.driver}" />
+		<property name="idleConnectionTestPeriodInMinutes" value="${bonecp.idleConnectionTestPeriodInMinutes}" />
+		<property name="maxConnectionAgeInSeconds" value="${bonecp.maxConnectionAgeInSeconds}" />
+		<property name="idleMaxAgeInMinutes" value="${bonecp.idleMaxAgeInMinutes}" />
+		<property name="maxConnectionsPerPartition" value="${bonecp.maxConnectionsPerPartition}" />
+		<property name="minConnectionsPerPartition" value="${bonecp.minConnectionsPerPartition}" />
+		<property name="partitionCount" value="${bonecp.partitionCount}" />
+		<property name="acquireIncrement" value="${bonecp.acquireIncrement}" />
+		<property name="statementsCacheSize" value="${bonecp.statementsCacheSize}" />
+		<property name="acquireRetryDelayInMs" value="${bonecp.acquireRetryDelayInMs}" />
+		<property name="connectionTestStatement" value="${bonecp.connectionTestStatement}" />
+		<property name="initSQL" value="${bonecp.initSQL}" />
+	</bean>
+	
+	<bean id="dataSource" parent="abstractDataSource" destroy-method="close">
+		<property name="jdbcUrl" value="${postgre.url}" />
+		<property name="username" value="${postgre.user}" />
+		<property name="password" value="${postgre.password}" />
+	</bean>
+	
+	<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="typeAliasesPackage" value="com.cc.vms.model" />
+	</bean>
+	  <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.cc.vms.dao" />
+	</bean>
+
+	<bean name="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+
+</beans>

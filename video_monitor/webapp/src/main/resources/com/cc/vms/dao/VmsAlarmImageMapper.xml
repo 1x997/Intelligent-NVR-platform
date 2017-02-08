@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cc.vms.dao.VmsAlarmImageMapper" >
+  <resultMap id="BaseResultMap" type="com.cc.vms.model.VmsAlarmImage" >
+    <id column="image_id" property="imageId" jdbcType="INTEGER" />
+    <result column="alarm_id" property="alarmId" jdbcType="INTEGER" />
+    <result column="image_time" property="imageTime" jdbcType="TIMESTAMP" />
+    <result column="image_url" property="imageUrl" jdbcType="VARCHAR" />
+    <result column="extend" property="extend" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    image_id, alarm_id, image_time, image_url, extend
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from vms_alarm_image
+    where image_id = #{imageId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByAlarmId" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from vms_alarm_image
+    where alarm_id = #{alarmId}
+    order by image_id
+    limit #{rows} offset #{offset}
+  </select>
+  
+  <select id="countByAlarmId" resultType="java.lang.Integer" >
+    select count(*)
+    from vms_alarm_image
+    where alarm_id = #{alarmId}
+  </select>
+  
+  <select id="selectByAlarmIdsLimit3" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+      from vms_alarm_image a
+     where alarm_id in 
+	    <foreach collection="ids" item="id" open="(" separator="," close=")">
+	      #{id}
+		</foreach>
+       and image_id in (
+         select image_id 
+           from vms_alarm_image b
+          where b.alarm_id = a.alarm_id
+          order by b.image_id limit 3)
+     order by a.alarm_id, a.image_id
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from vms_alarm_image
+    where image_id = #{imageId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insertSelective" parameterType="com.cc.vms.model.VmsAlarmImage" useGeneratedKeys="true" keyProperty="imageId" >
+    insert into vms_alarm_image
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="alarmId != null" >
+        alarm_id,
+      </if>
+      <if test="imageTime != null" >
+        image_time,
+      </if>
+      <if test="imageUrl != null" >
+        image_url,
+      </if>
+      <if test="extend != null" >
+        extend,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="alarmId != null" >
+        #{alarmId,jdbcType=INTEGER},
+      </if>
+      <if test="imageTime != null" >
+        #{imageTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="imageUrl != null" >
+        #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="extend != null" >
+        #{extend,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.cc.vms.model.VmsAlarmImage" >
+    update vms_alarm_image
+    <set >
+      <if test="alarmId != null" >
+        alarm_id = #{alarmId,jdbcType=INTEGER},
+      </if>
+      <if test="imageTime != null" >
+        image_time = #{imageTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="imageUrl != null" >
+        image_url = #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="extend != null" >
+        extend = #{extend,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where image_id = #{imageId,jdbcType=INTEGER}
+  </update>
+  
+</mapper>

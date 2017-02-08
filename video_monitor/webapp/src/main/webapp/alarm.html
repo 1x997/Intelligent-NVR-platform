@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>系统告警查询</title>
+	<link rel="stylesheet" type="text/css" href="css/viewer.min.css">
+	<script src="js/base.js"></script>
+	<script src="js/viewer.min.js"></script>
+	<script src="js/pages/alarm.js"></script>
+</head>
+
+<style>
+	#toolbar {
+		height: 36px;
+		padding-left: 5px;
+		padding-top: 3px;
+	}
+	
+	#toolbar input,#toolbar .textbox {
+		height: 28px !important;
+		margin-right: 2px;
+	}
+	img {
+		cursor: pointer;
+	}
+	table img {
+		height: 50px;
+		margin: 2px;
+	}
+</style>
+
+<body>
+	<div id="p" class="easyui-panel" title="过滤条件">
+		<div id="toolbar">
+			<input id="cc_station" class="easyui-combobox" data-options="width:120,prompt:'选择变电站',editable:false,valueField:'stationId',textField:'stationName'"></input>
+			<input id="cc_camera" class="easyui-combobox" data-options="width:120,prompt:'选择摄像头',editable:false,valueField:'cameraId',textField:'cameraName'"></input>
+			<input id="dd_begin" type="text" class="easyui-datetimebox" data-options="width:150,prompt:'开始时间',editable:false"></input>
+			<input id="dd_end" type="text" class="easyui-datetimebox" data-options="width:150,prompt:'结束时间',editable:false"></input>
+			<input id="cc_check_type" class="easyui-combobox" data-options="width:120,prompt:'选择检查类型',editable:false,valueField:'id',textField:'text'"></input>
+			<a id="btn_search" href="javascript:;" class="easyui-linkbutton" onclick="doSearch()">查询</a>
+		</div>
+	</div>
+	<div style="height:5px;"></div>
+	<div id="alarm_grid"></div>
+	<div id='alarm_pic_dialog' style="display: none;"></div>
+	
+</body>
+</html>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cc.vms.dao.VmsStationMapper" >
+  <resultMap id="BaseResultMap" type="com.cc.vms.model.VmsStation" >
+    <id column="station_id" property="stationId" jdbcType="INTEGER" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="station_name" property="stationName" jdbcType="VARCHAR" />
+    <result column="station_type" property="stationType" jdbcType="INTEGER" />
+    <result column="is_active" property="isActive" jdbcType="INTEGER" />
+    <result column="ord_id" property="ordId" jdbcType="INTEGER" />
+    <result column="extend" property="extend" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    station_id, parent_id, station_name, station_type, is_active, ord_id, extend
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from vms_station
+    where station_id = #{stationId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectAllActive" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from vms_station
+    where is_active = 1
+    order by ord_id, station_id
+  </select>
+  
+  <select id="selectAllActiveLeaf" resultMap="BaseResultMap" >
+    select s2.station_id, s2.station_name 
+      from vms_station s1, vms_station s2
+	 where s1.station_type = 1 and s2.station_type = 0 
+	   and s2.parent_id = s1.station_id
+	   and s1.is_active = 1 and s2.is_active = 1
+     order by s1.ord_id, s1.station_id, s2.ord_id, s2.station_id
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from vms_station
+    where station_id = #{stationId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insertSelective" parameterType="com.cc.vms.model.VmsStation" useGeneratedKeys="true" keyProperty="stationId" >
+    insert into vms_station
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+      <if test="stationName != null" >
+        station_name,
+      </if>
+      <if test="stationType != null" >
+        station_type,
+      </if>
+      <if test="isActive != null" >
+        is_active,
+      </if>
+      <if test="ordId != null" >
+        ord_id,
+      </if>
+      <if test="extend != null" >
+        extend,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="parentId != null" >
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="stationName != null" >
+        #{stationName,jdbcType=VARCHAR},
+      </if>
+      <if test="stationType != null" >
+        #{stationType,jdbcType=INTEGER},
+      </if>
+      <if test="isActive != null" >
+        #{isActive,jdbcType=INTEGER},
+      </if>
+      <if test="ordId != null" >
+        #{ordId,jdbcType=INTEGER},
+      </if>
+      <if test="extend != null" >
+        #{extend,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.cc.vms.model.VmsStation" >
+    update vms_station
+    <set >
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="stationName != null" >
+        station_name = #{stationName,jdbcType=VARCHAR},
+      </if>
+      <if test="stationType != null" >
+        station_type = #{stationType,jdbcType=INTEGER},
+      </if>
+      <if test="isActive != null" >
+        is_active = #{isActive,jdbcType=INTEGER},
+      </if>
+      <if test="ordId != null" >
+        ord_id = #{ordId,jdbcType=INTEGER},
+      </if>
+      <if test="extend != null" >
+        extend = #{extend,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where station_id = #{stationId,jdbcType=INTEGER}
+  </update>
+
+</mapper>
